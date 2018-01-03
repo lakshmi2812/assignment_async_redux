@@ -42,7 +42,7 @@ search[field]: Field to search, one of 'title', 'author', or 'all' (default is '
 
 */
 
-app.get("/api/read", (req, res, next) => {
+/*app.get("/api/read", (req, res, next) => {
   console.log("Requesting data from Goodreads");
 
   // fetch(`${baseUrl}`, {
@@ -71,7 +71,7 @@ app.get("/api/read", (req, res, next) => {
     .then(checkStatus)
     .then(response => {
       parseString(response, function(err, result) {
-        return result;
+        console.log(response);
       });
     })
     .then(result => JSON.stringify(result))
@@ -79,6 +79,26 @@ app.get("/api/read", (req, res, next) => {
   // .catch(err={
   //   console.log(err);
   // })
+});*/
+app.get("/api/goodreads", async (req, res) => {
+  try {
+    let query = req.query;
+    let response = await fetch(
+      `https://www.goodreads.com/search.xml?key=${
+        process.env.APIkey
+      }&q=Ender%27s+Game`
+    ); 
+    response = await parseString(response);
+    //response = await response.text();
+    response = await JSON.stringify(response)
+    console.log(response);
+   
+    //console.log(response)
+    res.json(response);
+  } catch (e) {
+    console.error(e);
+    res.json(e);
+  }
 });
 
 function errorHandler(err, req, res, next) {
