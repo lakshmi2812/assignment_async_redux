@@ -87,25 +87,50 @@ search[field]: Field to search, one of 'title', 'author', or 'all' (default is '
 //   return response.json();
 // }
 
+const getResults = (data) => {
+let results1 = data.map(dat =>{
+return dat.best_book
+
+
+
+})
+//console.log(results1)
+getMoreResults(results1)
+}
+
+const getMoreResults = (data) =>{
+let results = []
+//console.log(data[1].author)
+for (var i =0; i < data.length; i++){
+data[i].forEach(dat=>{
+  //console.log(dat.author)
+  results.push({author: dat.author[0].name[0], title: dat.title[0]})
+})
+}
+console.log(results)
+
+}
+
+
 app.get("/api/goodreads", async (req, res) => {
   try {
     let query = req.query;
     let response = await fetch(
       `https://www.goodreads.com/search.xml?key=${
         process.env.APIkey
-      }&q="Xenocide"`
+      }&q=${query}`
     );
     response = await response.text();
-    console.log("xml response", response);
+    //console.log("xml response", response);
     let parsedXml = await parseString(response);
     //response = await response.text();
     response = JSON.stringify(parsedXml, null, 2);
-    console.log("JSON stringified response: ", response);
+    //console.log("JSON stringified response: ", response);
     response = await JSON.parse(response);
-    console.log("Readable JSON:", response);
-    console.log("title=>", response.GoodreadsResponse.search);
+   // console.log("Readable JSON:", response);
+    //console.log("title=>", response.GoodreadsResponse.search[0].results[0].work);
     //console.log("JSON Readable data", jsonData);
-
+    getResults(response.GoodreadsResponse.search[0].results[0].work)
     //res.json(response);
   } catch (e) {
     console.error(e);
