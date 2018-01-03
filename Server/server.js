@@ -1,6 +1,7 @@
 require("es6-promise").polyfill();
 require("isomorphic-fetch");
 require("dotenv").config();
+const util = require("util");
 
 const APIkey = process.env.APIkey;
 const APIsecret = process.env.APIsecret;
@@ -10,6 +11,7 @@ const express = require("express");
 const app = express();
 
 var parseString = require("xml2js").parseString;
+parseString = util.promisify(parseString);
 // var xml = "<root>Hello xml2js!</root>";
 // parseString(xml, function(err, result) {
 //   console.dir(result);
@@ -80,21 +82,31 @@ search[field]: Field to search, one of 'title', 'author', or 'all' (default is '
   //   console.log(err);
   // })
 });*/
+
+// function parseJSON(response) {
+//   return response.json();
+// }
+
 app.get("/api/goodreads", async (req, res) => {
   try {
     let query = req.query;
     let response = await fetch(
       `https://www.goodreads.com/search.xml?key=${
         process.env.APIkey
-      }&q=Ender%27s+Game`
-    ); 
-    response = await parseString(response);
+      }&q="Xenocide"`
+    );
+    response = await response.text();
+    console.log("xml response", response);
+    let parsedXml = await parseString(response);
     //response = await response.text();
-    response = await JSON.stringify(response)
-    console.log(response);
-   
-    //console.log(response)
-    res.json(response);
+    response = JSON.stringify(parsedXml, null, 2);
+    console.log("JSON stringified response: ", response);
+    response = await JSON.parse(response);
+    console.log("Readable JSON:", response);
+    console.log("title=>", response.GoodreadsResponse.search);
+    //console.log("JSON Readable data", jsonData);
+
+    //res.json(response);
   } catch (e) {
     console.error(e);
     res.json(e);
