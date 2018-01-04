@@ -22,23 +22,22 @@ export function getGOODREADSFailure(error) {
   };
 }
 
-export function getInitialGOODREADS() {
+export function getInitialGOODREADS(param) {
   return dispatch => {
     // Update the state so that it knows the request has begun
     dispatch(getGOODREADSRequest());
-    
-    fetch("api/goodreads")
+
+    fetch(`/api/goodreads?search=${param}`)
       .then(response => {
         // If response not okay, throw an error
         if (!response.ok) {
           throw new Error(`${response.status} ${response.statusText}`);
         }
         // Otherwise, extract the response into json
-        
+
         return response.json();
       })
       .then(json => {
-       
         dispatch(getGOODREADSSuccess(json));
       })
       .catch(error => {

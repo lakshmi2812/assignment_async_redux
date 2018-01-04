@@ -10,6 +10,11 @@ const baseURL = " https://www.goodreads.com/search/index.xml";
 const express = require("express");
 const app = express();
 
+const morgan = require("morgan");
+const morganToolkit = require("morgan-toolkit")(morgan);
+
+app.use(morganToolkit());
+
 var parseString = require("xml2js").parseString;
 parseString = util.promisify(parseString);
 // var xml = "<root>Hello xml2js!</root>";
@@ -110,8 +115,8 @@ const getMoreResults = data => {
 
 app.get("/api/goodreads", async (req, res) => {
   try {
-    console.log("request")
-    console.log(req.query)
+    console.log("request");
+    console.log(req.query);
     let query = req.query.search;
     let response = await fetch(
       `https://www.goodreads.com/search.xml?key=${process.env.APIkey}&q=${

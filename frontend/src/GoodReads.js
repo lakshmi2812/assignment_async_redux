@@ -1,30 +1,22 @@
 import React from "react";
 
-
-
-
 const GoodReadContent = ({ goodread }) => {
-   const people = goodread.map(person => {
+  const books = goodread.map(book => {
     return (
-      <div className="writers">
-       
-        <h1>{person.author}</h1>
+      <div className="writers" key={book.author}>
+        <h1>{book.author}</h1>
         <p>
-          <strong>{person.title}</strong>
+          <strong>{book.title}</strong>
         </p>
       </div>
     );
   });
-   return (
+  return (
     <div className="container">
-      <div className="row">{people}</div>
+      <div className="row">{books}</div>
     </div>
   );
-}; 
-
-  
-
-
+};
 
 const GoodReads = ({ goodreads, isFetching }) => {
   return (
