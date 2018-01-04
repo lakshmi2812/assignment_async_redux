@@ -110,6 +110,8 @@ const getMoreResults = data => {
 
 app.get("/api/goodreads", async (req, res) => {
   try {
+    console.log("request")
+    console.log(req.query)
     let query = req.query.search;
     let response = await fetch(
       `https://www.goodreads.com/search.xml?key=${process.env.APIkey}&q=${

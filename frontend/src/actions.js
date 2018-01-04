@@ -1,6 +1,6 @@
 export const GET_GOODREADS_REQUEST = "GET_GOODREADS_REQUEST";
-export const GET_GOODREADS_SUCCESS = "GET_GOODREADS_REQUEST";
-export const GET_GOODREADS_FAILURE = "GET_GOODREADS_REQUEST";
+export const GET_GOODREADS_SUCCESS = "GET_GOODREADS_SUCCESS";
+export const GET_GOODREADS_FAILURE = "GET_GOODREADS_FAILURE";
 
 export function getGOODREADSRequest() {
   return {
@@ -26,7 +26,7 @@ export function getInitialGOODREADS() {
   return dispatch => {
     // Update the state so that it knows the request has begun
     dispatch(getGOODREADSRequest());
-
+    
     fetch("api/goodreads")
       .then(response => {
         // If response not okay, throw an error
@@ -34,10 +34,11 @@ export function getInitialGOODREADS() {
           throw new Error(`${response.status} ${response.statusText}`);
         }
         // Otherwise, extract the response into json
+        
         return response.json();
       })
       .then(json => {
-        // Dispatch success which sets the APOD.
+       
         dispatch(getGOODREADSSuccess(json));
       })
       .catch(error => {

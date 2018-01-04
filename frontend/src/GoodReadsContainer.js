@@ -4,7 +4,7 @@ import GoodReads from './GoodReads'
 import {getInitialGOODREADS} from './actions'
 
 
-class ApodContainer extends Component {
+class GoodReadsContainer extends Component {
   componentDidMount() {
     this.props.getInitialGOODREADS()
   }

@@ -1,7 +1,7 @@
 import * as Actions from './actions'
 
 const initialState = {
-  goodreads: {},
+  goodreads: [],
   isFetching: false,
   error: null,
 }
